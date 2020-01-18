@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using VulnDotNetCore.Data;
+using VulnDotNetCore.Models;
 
 namespace VulnDotNetCore.Controllers
 {
@@ -36,6 +39,14 @@ namespace VulnDotNetCore.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpPost("test")]
+        public async Task<IEnumerable<Test>> Test([FromServices] ApplicationDbContext ctx, [FromBody] string query)
+        {
+            var test = await ctx.Tests.ToListAsync();
+
+            return test;
         }
     }
 }

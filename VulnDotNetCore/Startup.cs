@@ -1,16 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
-using VulnDotNetCore.Data;
-using VulnDotNetCore.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VulnDotNetCore.Data;
+using VulnDotNetCore.Models;
 
 namespace VulnDotNetCore
 {
@@ -59,12 +55,14 @@ namespace VulnDotNetCore
             }
             else
             {
+                app.UseHttpsRedirection();
+
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -87,7 +85,6 @@ namespace VulnDotNetCore
 
                 if (env.IsDevelopment())
                 {
-                    //spa.UseReactDevelopmentServer(npmScript: "start");
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import authService from './api-authorization/AuthorizeService'
+import React, { Component } from "react";
+import authService from "./api-authorization/AuthorizeService";
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
@@ -15,7 +15,7 @@ export class FetchData extends Component {
 
   static renderForecastsTable(forecasts) {
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
+      <table className="table table-striped" aria-labelledby="tabelLabel">
         <thead>
           <tr>
             <th>Date</th>
@@ -25,37 +25,75 @@ export class FetchData extends Component {
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
+          {forecasts.map(forecast => (
             <tr key={forecast.date}>
               <td>{forecast.date}</td>
               <td>{forecast.temperatureC}</td>
               <td>{forecast.temperatureF}</td>
               <td>{forecast.summary}</td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
     );
   }
 
   render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+    let contents = this.state.loading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
+      FetchData.renderForecastsTable(this.state.forecasts)
+    );
 
     return (
-      <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
-        {contents}
-      </div>
+      <>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Name:
+            <input
+              value={this.state.inputValue}
+              onChange={evt => this.setState({ inputValue: evt.target.value })}
+            />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+        <div>
+          <h1 id="tabelLabel">Weather forecast</h1>
+          <p>This component demonstrates fetching data from the server.</p>
+          {contents}
+        </div>
+      </>
     );
   }
 
+  handleSubmit = async () => {
+    event.preventDefault();
+
+    const token = await authService.getAccessToken();
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${token}`);
+    headers.append("Content-Type", "application/json");
+
+    fetch("weatherforecast/test", {
+      method: "post",
+      body: JSON.stringify(this.state.inputValue),
+      headers: headers
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        console.log("Response:");
+        console.log(data);
+      });
+  };
+
   async populateWeatherData() {
     const token = await authService.getAccessToken();
-    const response = await fetch('weatherforecast', {
-      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    const response = await fetch("weatherforecast", {
+      headers: !token ? {} : { Authorization: `Bearer ${token}` }
     });
     const data = await response.json();
     this.setState({ forecasts: data, loading: false });
