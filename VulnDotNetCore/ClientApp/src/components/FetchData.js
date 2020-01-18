@@ -76,7 +76,7 @@ export class FetchData extends Component {
     headers.append("Authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
 
-    fetch(`weatherforecast/test/${this.state.inputValue}`, {
+    fetch(`weatherforecast/test?query=${this.state.inputValue}`, {
       method: "get",
       headers: headers
     })

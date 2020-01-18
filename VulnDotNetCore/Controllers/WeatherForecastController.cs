@@ -41,7 +41,7 @@ namespace VulnDotNetCore.Controllers
             .ToArray();
         }
 
-        [HttpGet("test/{query}")]
+        [HttpGet("test")]
         public async Task<IEnumerable<Test>> Test([FromServices] ApplicationDbContext ctx, string query)
         {
             var sql = $"SELECT * From Test Where Description = '{query}'";
