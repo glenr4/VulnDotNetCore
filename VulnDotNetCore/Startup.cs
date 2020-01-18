@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
 using VulnDotNetCore.Data;
 using VulnDotNetCore.Models;
 
@@ -30,6 +33,7 @@ namespace VulnDotNetCore
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
+                .AddSigningCredential(this.CreateSigningCredential())
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
@@ -43,6 +47,26 @@ namespace VulnDotNetCore
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            // TODO: only enable in Dev
+            IdentityModelEventSource.ShowPII = true;
+        }
+
+        private SigningCredentials CreateSigningCredential()
+        {
+            var credentials = new SigningCredentials(GetSecurityKey(), SecurityAlgorithms.RsaSha256);
+
+            return credentials;
+        }
+
+        private RSACryptoServiceProvider GetRSACryptoServiceProvider()
+        {
+            return new RSACryptoServiceProvider(2048);
+        }
+
+        private SecurityKey GetSecurityKey()
+        {
+            return new RsaSecurityKey(GetRSACryptoServiceProvider());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
