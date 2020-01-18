@@ -41,12 +41,14 @@ namespace VulnDotNetCore.Controllers
             .ToArray();
         }
 
-        [HttpPost("test")]
-        public async Task<IEnumerable<Test>> Test([FromServices] ApplicationDbContext ctx, [FromBody] string query)
+        [HttpGet("test/{query}")]
+        public async Task<IEnumerable<Test>> Test([FromServices] ApplicationDbContext ctx, string query)
         {
-            var test = await ctx.Tests.ToListAsync();
+            var sql = $"SELECT * From Test Where Description = '{query}'";
 
-            return test;
+            var result = await ctx.Tests.FromSqlRaw(sql).ToListAsync();
+
+            return result;
         }
     }
 }
