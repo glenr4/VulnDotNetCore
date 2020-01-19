@@ -1,4 +1,4 @@
-### Vulnerable ASP.Net Core Application
+# Vulnerable ASP.Net Core Application
 This is a deliberately vulnerable web application for the purposes of practicing penetration testing.
 
 ## Initialise
@@ -10,10 +10,7 @@ This is a deliberately vulnerable web application for the purposes of practicing
 1. Open a command prompt in the ClientApp directory and run: yarn start
 2. Open a command prompt in the VulnDotNetCore directory (where the .csproj file is) and run: dotnet run watch
 
-For more information see:
-https://docs.microsoft.com/en-us/aspnet/core/client-side/spa/react?view=aspnetcore-3.1&tabs=visual-studio
-
-# Notes:
+### Notes:
 To use this with FireFox, I had to set network.websocket.allowInsecureFromHTTPS = true in about:config. But you should remember to set this back to false
 once you have finished testing.
 Alternatively, you can create your own SSL certificate.
