@@ -48,9 +48,6 @@ namespace VulnDotNetCore
             {
                 configuration.RootPath = "ClientApp/build";
             });
-
-            // TODO: only enable in Dev
-            IdentityModelEventSource.ShowPII = true;
         }
 
         private SigningCredentials CreateSigningCredential()
@@ -79,6 +76,8 @@ namespace VulnDotNetCore
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                IdentityModelEventSource.ShowPII = true;
             }
             else
             {
