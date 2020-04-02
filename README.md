@@ -9,6 +9,7 @@ This is a deliberately vulnerable web application for the purposes of practicing
 ## To run in Development mode
 1. Open a command prompt in the ClientApp directory and run: yarn start
 2. Open a command prompt in the VulnDotNetCore directory (where the .csproj file is) and run: dotnet run watch
+3. In a browser go to: localhost:5000
 
 ### Notes:
 To use this with FireFox, I had to set network.websocket.allowInsecureFromHTTPS = true in about:config. But you should remember to set this back to false
