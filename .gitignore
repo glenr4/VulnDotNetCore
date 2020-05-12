@@ -227,3 +227,5 @@ Thumbs.db
 
 # Custom
 appsettings.*.json
+
+*.sql

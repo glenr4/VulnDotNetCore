@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VulnDotNetCore.Data;
 
 namespace VulnDotNetCore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200512231428_CityWeather")]
+    partial class CityWeather
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,50 +321,6 @@ namespace VulnDotNetCore.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("CityWeather");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = new Guid("da5f6d56-2a89-4321-b4bc-dfd4ff90bd3b"),
-                            CityName = "Melbourne",
-                            Forecast = "Grey and cold",
-                            TemperatureC = 12.0m
-                        },
-                        new
-                        {
-                            ID = new Guid("aab8cab1-d77e-4b42-bb68-48eb14c9d50e"),
-                            CityName = "Sydney",
-                            Forecast = "Warm",
-                            TemperatureC = 20.1m
-                        },
-                        new
-                        {
-                            ID = new Guid("de884a80-9f47-460d-9f9f-84b3ed521cf1"),
-                            CityName = "Brisbane",
-                            Forecast = "Sunny",
-                            TemperatureC = 25m
-                        },
-                        new
-                        {
-                            ID = new Guid("152c4eb4-0595-4b47-a2f0-c2f41ab2c555"),
-                            CityName = "Adelaide",
-                            Forecast = "Warm",
-                            TemperatureC = 18m
-                        },
-                        new
-                        {
-                            ID = new Guid("7b31614b-af67-4382-ab28-0a56ef11f0ad"),
-                            CityName = "Perth",
-                            Forecast = "Sunny and windy",
-                            TemperatureC = 28m
-                        },
-                        new
-                        {
-                            ID = new Guid("16bcd74e-734c-451d-9e36-1868a1cbdf25"),
-                            CityName = "Hobart",
-                            Forecast = "Cold and windy",
-                            TemperatureC = 13m
-                        });
                 });
 
             modelBuilder.Entity("VulnDotNetCore.Models.Test", b =>
