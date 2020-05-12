@@ -90,6 +90,8 @@ namespace VulnDotNetCore
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseSerilogRequestLogging();
+
             app.UseRouting();
 
             app.UseAuthentication();
