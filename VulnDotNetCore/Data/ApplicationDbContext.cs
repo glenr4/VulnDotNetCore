@@ -9,7 +9,6 @@ namespace VulnDotNetCore.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public DbSet<Test> Tests { get; set; }
         public DbSet<CityWeather> CityWeather { get; set; }
 
         public ApplicationDbContext(
@@ -21,8 +20,6 @@ namespace VulnDotNetCore.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<Test>().ToTable(nameof(Test));
 
             builder.Entity<CityWeather>().ToTable(nameof(CityWeather));
 
