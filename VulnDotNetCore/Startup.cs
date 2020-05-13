@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System;
 using System.Security.Cryptography;
 using VulnDotNetCore.Data;
 using VulnDotNetCore.Models;
@@ -16,12 +17,16 @@ namespace VulnDotNetCore
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        private bool _showDebugInfo;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
 
-        public IConfiguration Configuration { get; }
+            _showDebugInfo = Convert.ToBoolean(Configuration["ShowDebugInfo"]);
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -72,7 +77,7 @@ namespace VulnDotNetCore
         {
             app.UseSerilogRequestLogging();
 
-            if (env.IsDevelopment())
+            if (_showDebugInfo)
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -82,6 +87,10 @@ namespace VulnDotNetCore
             else
             {
                 app.UseExceptionHandler("/Error");
+            }
+
+            if (!env.IsDevelopment())
+            {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
