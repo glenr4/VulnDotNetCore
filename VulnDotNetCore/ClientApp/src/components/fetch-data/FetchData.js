@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import authService from "./api-authorization/AuthorizeService";
+import authService from "../api-authorization/AuthorizeService";
+import "./FetchData.css";
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
@@ -51,17 +52,17 @@ export class FetchData extends Component {
           <label>
             Name:
             <input
+              className={"search-input"}
               value={this.state.inputValue}
               onChange={(evt) =>
                 this.setState({ inputValue: evt.target.value })
               }
             />
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Search" />
         </form>
         <div>
           <h1 id="tabelLabel">Weather forecast</h1>
-          <p>This component demonstrates fetching data from the server.</p>
           {contents}
         </div>
       </>
