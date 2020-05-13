@@ -10,6 +10,7 @@ namespace VulnDotNetCore.Data
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
         public DbSet<Test> Tests { get; set; }
+        public DbSet<CityWeather> CityWeather { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options,

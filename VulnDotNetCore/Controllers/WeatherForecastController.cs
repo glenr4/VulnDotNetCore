@@ -16,39 +16,28 @@ namespace VulnDotNetCore.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ApplicationDbContext _ctx;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ApplicationDbContext ctx)
         {
             _logger = logger;
+            _ctx = ctx;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public Task<List<CityWeather>> Get(string query)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            if (String.IsNullOrWhiteSpace(query))
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
+                return _ctx.CityWeather.ToListAsync();
+            }
+            else
+            {
+                var sql = $"SELECT * From {nameof(CityWeather)} Where {nameof(CityWeather.CityName)} = '{query}'";
 
-        [HttpGet("test")]
-        public async Task<IEnumerable<Test>> Test([FromServices] ApplicationDbContext ctx, string query)
-        {
-            var sql = $"SELECT * From Test Where Description = '{query}'";
-
-            var result = await ctx.Tests.FromSqlRaw(sql).ToListAsync();
-
-            return result;
+                return _ctx.CityWeather.FromSqlRaw(sql).ToListAsync();
+            }
         }
     }
 }
