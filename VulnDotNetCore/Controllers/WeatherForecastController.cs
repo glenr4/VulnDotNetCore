@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
+using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VulnDotNetCore.Data;
@@ -15,17 +14,25 @@ namespace VulnDotNetCore.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly ApplicationDbContext _ctx;
+        private readonly ILogger _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, ApplicationDbContext ctx)
+        public WeatherForecastController(ApplicationDbContext ctx, ILogger logger)
         {
-            _logger = logger;
             _ctx = ctx;
+            _logger = logger;
         }
 
         [HttpGet]
         public Task<List<CityWeather>> Get(string query)
+        {
+            _logger.Debug(query);
+
+            //return Easy(query);
+            return Medium(query);
+        }
+
+        private Task<List<CityWeather>> Easy(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
@@ -37,6 +44,20 @@ namespace VulnDotNetCore.Controllers
 
                 return _ctx.CityWeather.FromSqlRaw(sql).ToListAsync();
             }
+        }
+
+        private Task<List<CityWeather>> Medium(string query)
+        {
+            return Easy(FilterChars(query));
+        }
+
+        private string FilterChars(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query)) return query;
+
+            var filtered = query.Replace(" ", "");
+
+            return filtered;
         }
     }
 }
