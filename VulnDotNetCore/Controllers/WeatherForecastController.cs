@@ -26,13 +26,24 @@ namespace VulnDotNetCore.Controllers
         }
 
         [HttpGet]
-        public Task<List<CityWeather>> Get(string query)
+        public Task<List<CityWeather>> Get(string query, string method)
         {
-            _logger.Debug($"User query string: {query}");
+            _logger.Debug($"User query string: {query} ({method})");
 
-            return Easy(query);
-            //return Medium(query);
-            //return Hard(query);
+            switch (method)
+            {
+                case "Easy":
+                    return Easy(query);
+
+                case "Medium":
+                    return Medium(query);
+
+                case "Hard":
+                    return Hard(query);
+
+                default:
+                    return default;
+            }
         }
 
         private Task<List<CityWeather>> Easy(string query)

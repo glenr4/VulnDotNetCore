@@ -2,3 +2,8 @@
   min-width: 500px;
   margin: 0px 10px;
 }
+
+.radio-flex {
+  display: flex;
+  margin: 5px;
+}

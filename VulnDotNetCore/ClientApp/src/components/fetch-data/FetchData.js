@@ -1,13 +1,22 @@
 import React, { Component } from "react";
 import authService from "../api-authorization/AuthorizeService";
 import "./FetchData.css";
+import RadioButton from "../radio-button/RadioButton";
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
+  option1 = "Easy";
+  option2 = "Medium";
+  option3 = "Hard";
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true, inputValue: "" };
+    this.state = {
+      forecasts: [],
+      loading: true,
+      inputValue: "",
+      method: this.option1,
+    };
   }
 
   componentDidMount() {
@@ -48,6 +57,8 @@ export class FetchData extends Component {
 
     return (
       <>
+        <h1 id="tabelLabel">Weather forecast</h1>
+
         <form onSubmit={this.getWeather}>
           <label>
             Name:
@@ -62,7 +73,26 @@ export class FetchData extends Component {
           <input type="submit" value="Search" />
         </form>
         <div>
-          <h1 id="tabelLabel">Weather forecast</h1>
+          <div className="radio-btn-container radio-flex">
+            <RadioButton
+              changed={this.radioChangeHandler}
+              isSelected={this.state.method === this.option1}
+              label={this.option1}
+              value={this.option1}
+            />
+            <RadioButton
+              changed={this.radioChangeHandler}
+              isSelected={this.state.method === this.option2}
+              label={this.option2}
+              value={this.option2}
+            />
+            <RadioButton
+              changed={this.radioChangeHandler}
+              isSelected={this.state.method === this.option3}
+              label={this.option3}
+              value={this.option3}
+            />
+          </div>
           {contents}
         </div>
       </>
@@ -79,10 +109,13 @@ export class FetchData extends Component {
     headers.append("Authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
 
-    fetch(`weatherforecast?query=${this.state.inputValue}`, {
-      method: "get",
-      headers: headers,
-    })
+    fetch(
+      `weatherforecast?query=${this.state.inputValue}&method=${this.state.method}`,
+      {
+        method: "get",
+        headers: headers,
+      }
+    )
       .then((response) => {
         return response.json();
       })
@@ -95,5 +128,9 @@ export class FetchData extends Component {
       .catch(() => {
         this.setState({ forecasts: [], loading: false });
       });
+  };
+
+  radioChangeHandler = () => {
+    this.setState({ method: event.target.value });
   };
 }
