@@ -1,4 +1,3 @@
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -31,7 +30,6 @@ namespace VulnDotNetCore
                     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                     .MinimumLevel.Override("System", LogEventLevel.Debug)
                     .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-                    .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
                     .WriteTo.Console());
         }
     }
