@@ -74,7 +74,6 @@ export class FetchData extends Component {
       event.preventDefault();
     }
 
-    const self = this;
     const token = await authService.getAccessToken();
     const headers = new Headers();
     headers.append("Authorization", `Bearer ${token}`);
@@ -84,14 +83,17 @@ export class FetchData extends Component {
       method: "get",
       headers: headers,
     })
-      .then(function (response) {
+      .then((response) => {
         return response.json();
       })
-      .then(function (data) {
+      .then((data) => {
         console.log("Response:");
         console.log(data);
 
-        self.setState({ forecasts: data, loading: false });
+        this.setState({ forecasts: data, loading: false });
+      })
+      .catch(() => {
+        this.setState({ forecasts: [], loading: false });
       });
   };
 }
