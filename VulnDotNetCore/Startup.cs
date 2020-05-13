@@ -53,6 +53,8 @@ namespace VulnDotNetCore
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddApplicationInsightsTelemetry();
         }
 
         private SigningCredentials CreateSigningCredential()
